@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Notes - MGM EDUZONE</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+  
+<h1 class="logo">MGM EDUZONE</h1>
+
+<nav>
+     <a href="/">Home</a>
+    <a href="/notes/">Notes</a>
+    <a href="/about/">About</a>
+    <a href="/contact/">Contact</a>
+</nav>
+
+<h2>AVAILABLE NOTES</h2>
+
+<label>Select Semester:</label>
+
+<select id="semesterFilter" onchange="filterSemester()">
+<option value="all">All</option>
+<option value="1">Semester 1</option>
+<option value="2">Semester 2</option>
+<option value="3">Semester 3</option>
+<option value="4">Semester 4</option>
+<option value="5">Semester 5</option>
+<option value="6">Semester 6</option>
+
+</select>
+
+<input type="text" id="searchInput" placeholder="Search for notes..." onkeyup="searchNotes()">
+
+
+<table border="1" align="center" width="70%">
+
+<tr>
+<th>SUBJECT</th>
+<th>SEMESTER</th>
+<th>MODULE</th>
+<th>BRANCH</th>
+<th>DOWNLOAD</th>
+</tr>
+
+{% for note in notes %}
+<tr>
+<td>{{ note.subject }}</td>
+<td>{{ note.semester }}</td>
+<td>{{ note.module }}</td>
+<td>{{ note.department }}</td>
+<td>
+<a href="{{ note.file.url }}">
+<button>DOWNLOAD</button>
+</a>
+</td>
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="5">No notes available</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<script>
+function searchNotes() {
+  var input = document.getElementById("searchInput");
+  var filter = input.value.toLowerCase();
+  var table = document.querySelector("table");
+  var tr = table.getElementsByTagName("tr");
+
+  for (var i = 1; i < tr.length; i++) {
+    var td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      var textValue = td.textContent || td.innerText;
+      if (textValue.toLowerCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+
+<footer>
+<p>MGM EDUZONE - Online Notes Management System</p>
+<p>MGM Polytechnic College Pampakuda</p>
+<p>Developed by: ADITH K S | BASIL PAUL | JISHNU A S | SHINTO SHIBU | AMAL P BABU</p>
+</footer>
+
+<script>
+function filterSemester() {
+  var select = document.getElementById("semesterFilter");
+  var filter = select.value;
+  var table = document.querySelector("table");
+  var tr = table.getElementsByTagName("tr");
+
+  for (var i = 1; i < tr.length; i++) {
+    var td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      if (filter === "all" || td.textContent === filter) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+
+</body>
+
+</html> 
